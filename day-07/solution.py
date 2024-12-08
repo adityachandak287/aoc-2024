@@ -1,4 +1,5 @@
 import argparse
+import math
 import sys
 from dataclasses import dataclass
 import enum
@@ -35,6 +36,11 @@ else:
 equations: list[Equation] = []
 
 
+def concat_ints(a: int, b: int) -> int:
+    b_digits = int(math.log10(b)) + 1
+    return a * pow(10, b_digits) + b
+
+
 def check_equation(eq: Equation) -> bool:
     num_operators = len(eq.numbers) - 1
 
@@ -47,7 +53,7 @@ def check_equation(eq: Equation) -> bool:
                 case Op.MULTIPLY:
                     total *= num
                 case Op.CONCAT:
-                    total = int(str(total) + str(num))
+                    total = concat_ints(total, num)
                 case _:
                     raise ValueError("Invalid operator!")
 
